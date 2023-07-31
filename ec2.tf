@@ -70,7 +70,8 @@ resource "aws_instance" "ec2_instance" {
               sudo systemctl start httpd
 
               # Tải mã nguồn của trang web React từ GitHub và triển khai nó
-              sudo su ec2-user -c "cd /var/www/html && git clone https://github.com/Contactary/contactary-fe.git"
+              sudo su ec2-user -c "cd /var/www/html && wget https://github.com/Contactary/contactary-fe/archive/refs/heads/develop.zip"
+              su do unzip develop.zip
               sudo su ec2-user -c "cd /var/www/html/contactary-fe && npm install && npm run build"
 
               # Tạo tệp cấu hình Apache cho ứng dụng React
