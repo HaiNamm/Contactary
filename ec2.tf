@@ -71,7 +71,9 @@ resource "aws_instance" "ec2_instance" {
   # Clone the React web app repository from GitHub
   sudo yum install -y git
   cd /var/www/html
-  git clone https://github.com/HaiNamm/contactary-fe.git
+  sudo git clone https://github.com/HaiNamm/contactary-fe.git
+  HaiNamm
+  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
   sudo chown -R ec2-user:ec2-user contactary-fe
   cd contactary-fe && sudo su ec2-user -c "npm install && npm run build"
 
