@@ -61,7 +61,6 @@ resource "aws_instance" "ec2_instance" {
   }
   user_data = <<-EOF
   #!/bin/bash
-  sudo yum install -y git
   sudo yum update -y
   sudo yum install -y httpd
   sudo amazon-linux-extras install -y epel
@@ -72,7 +71,7 @@ resource "aws_instance" "ec2_instance" {
   # Clone the React web app repository from GitHub
   sudo yum install -y git
   cd /var/www/html
-  sudo git clone https://github.com/Contactary/contactary-fe.git
+  git clone https://github.com/Contactary/contactary-fe.git
   sudo chown -R ec2-user:ec2-user contactary-fe
   cd contactary-fe && sudo su ec2-user -c "npm install && npm run build"
 
