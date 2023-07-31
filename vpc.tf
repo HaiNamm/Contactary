@@ -12,8 +12,9 @@ data "aws_availability_zones" "available_zones" {}
 #  2: Create a public subnet
 resource "aws_subnet" "PublicSubnet"{
     vpc_id = aws_vpc.myvpc.id
-    availability_zone = data.aws_availability_zones.available_zones.names[0]
     cidr_block = "10.0.1.0/24"
+    availability_zone = data.aws_availability_zones.available_zones.names[0]
+    map_public_ip_on_launch = true
     tags = {
         Name = "PublicSubnet"
     }
