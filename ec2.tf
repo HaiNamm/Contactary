@@ -61,6 +61,7 @@ resource "aws_instance" "ec2_instance" {
   }
   user_data = <<-EOF
               #!/bin/bash
+              sudo yum install -y git
               sudo yum update -y
               sudo yum install -y httpd
               sudo amazon-linux-extras install -y epel
