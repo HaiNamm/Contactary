@@ -72,7 +72,7 @@ resource "aws_instance" "ec2_instance" {
               # Tải mã nguồn của trang web React từ GitHub và triển khai nó
               sudo yum install -y unzip
               cd /var/www/html
-              sudo wget https://github.com/Contactary/contactary-fe/archive/refs/heads/develop.zip
+              sudo git clone https://github.com/Contactary/contactary-fe.git
               sudo unzip develop.zip
               sudo chown -R ec2-user:ec2-user contactary-fe-develop
               cd contactary-fe-develop && sudo su ec2-user -c "npm install && npm run build"
