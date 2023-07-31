@@ -70,9 +70,15 @@ resource "aws_instance" "ec2_instance" {
               sudo systemctl start httpd
 
               # Tải mã nguồn của trang web React từ GitHub và triển khai nó
-              sudo su ec2-user -c "cd /var/www/html && wget https://github.com/Contactary/contactary-fe/archive/refs/heads/develop.zip"
-              sudo su ec2-user -c "cd /var/www/html && unzip develop.zip"
-              sudo su ec2-user -c "cd /var/www/html/contactary-fe-develop && npm install && npm run build"
+              sudo yum install -y unzip
+              cd /var/www/html
+              sudo wget https://github.com/Contactary/contactary-fe/archive/refs/heads/develop.zip
+              sudo unzip develop.zip
+              sudo chown -R ec2-user:ec2-user contactary-fe-develop
+              cd contactary-fe-develop && sudo su ec2-user -c "npm install && npm run build"
+
+              # Di chuyển build output tới thư mục html của Apache
+              sudo cp -r build/* /var/www/html/
 
               # Tạo tệp cấu hình Apache cho ứng dụng React
               sudo bash -c 'cat << EOT > /etc/httpd/conf.d/react_app.conf
@@ -85,13 +91,7 @@ resource "aws_instance" "ec2_instance" {
     </Directory>
 </VirtualHost>
 EOT'
-
-              # Sao chép các tệp của ứng dụng React vào DocumentRoot
-              sudo su -c "cp -r /var/www/html/contactary-fe/build/* /var/www/html/"
-
-              # Khởi động lại Apache để áp dụng cấu hình mới
-              sudo systemctl restart httpd
-              EOF
+EOF
 }
 
 # print the url of the server
