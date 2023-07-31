@@ -55,11 +55,25 @@ resource "aws_instance" "ec2_instance" {
   subnet_id              = aws_subnet.PublicSubnet.id
   vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
   key_name               = "myec2key"
-  user_data              = file("install_web.sh")
 
   tags = {
     Name = "web server"
   }
+  user_data = <<-EOF
+              #!/bin/bash
+              sudo yum update -y
+              sudo yum install -y httpd
+              sudo amazon-linux-extras install -y epel
+              sudo yum install -y nodejs npm
+              sudo systemctl enable httpd
+              sudo systemctl start httpd
+
+              # Tải mã nguồn của trang web React từ GitHub và triển khai nó
+              sudo su ec2-user -c "cd /var/www/html && git clone https://github.com/Contactary/contactary-fe.git"
+              sudo su ec2-user -c "cd /var/www/html/contactary-fe && npm install && npm run build"
+              sudo su -c "cp -r /var/www/html/contactary-fe/build/* /var/www/html/"
+
+              EOF
 }
 
 # print the url of the server
