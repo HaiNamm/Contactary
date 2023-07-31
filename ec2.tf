@@ -71,8 +71,24 @@ resource "aws_instance" "ec2_instance" {
               # Tải mã nguồn của trang web React từ GitHub và triển khai nó
               sudo su ec2-user -c "cd /var/www/html && git clone https://github.com/Contactary/contactary-fe.git"
               sudo su ec2-user -c "cd /var/www/html/contactary-fe && npm install && npm run build"
+
+              # Tạo tệp cấu hình Apache cho ứng dụng React
+              sudo bash -c 'cat << EOT > /etc/httpd/conf.d/react_app.conf
+<VirtualHost *:80>
+    DocumentRoot /var/www/html
+    <Directory /var/www/html>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+EOT'
+
+              # Sao chép các tệp của ứng dụng React vào DocumentRoot
               sudo su -c "cp -r /var/www/html/contactary-fe/build/* /var/www/html/"
 
+              # Khởi động lại Apache để áp dụng cấu hình mới
+              sudo systemctl restart httpd
               EOF
 }
 
