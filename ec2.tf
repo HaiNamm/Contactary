@@ -60,38 +60,41 @@ resource "aws_instance" "ec2_instance" {
     Name = "web server"
   }
   user_data = <<-EOF
-              #!/bin/bash
-              sudo yum install -y git
-              sudo yum update -y
-              sudo yum install -y httpd
-              sudo amazon-linux-extras install -y epel
-              sudo yum install -y nodejs npm
-              sudo systemctl enable httpd
-              sudo systemctl start httpd
+                #!/bin/bash
+                sudo yum install -y git
+                sudo yum update -y
+                sudo yum install -y httpd
+                sudo amazon-linux-extras install -y epel
+                sudo yum install -y nodejs npm
+                sudo systemctl enable httpd
+                sudo systemctl start httpd
 
-              # Tải mã nguồn của trang web React từ GitHub và triển khai nó
-              sudo yum install -y unzip
-              cd /var/www/html
-              sudo git clone https://github.com/Contactary/contactary-fe.git
-              sudo unzip develop.zip
-              sudo chown -R ec2-user:ec2-user contactary-fe-develop
-              cd contactary-fe-develop && sudo su ec2-user -c "npm install && npm run build"
+                # Set biến môi trường cho GitHub Personal Access Token (PAT)
+                export GITHUB_TOKEN=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
 
-              # Di chuyển build output tới thư mục html của Apache
-              sudo cp -r build/* /var/www/html/
+                # Tải mã nguồn của trang web React từ GitHub và triển khai nó
+                sudo yum install -y unzip
+                cd /var/www/html
+                sudo -E wget --header="Authorization: token $GITHUB_TOKEN" https://github.com/HaiNamm/contactary-fe/archive/refs/heads/main.zip -O main.zip
+                sudo unzip main.zip
+                sudo chown -R ec2-user:ec2-user contactary-fe-main
+                cd contactary-fe-main && sudo su ec2-user -c "npm install && npm run build"
 
-              # Tạo tệp cấu hình Apache cho ứng dụng React
-              sudo bash -c 'cat << EOT > /etc/httpd/conf.d/react_app.conf
-<VirtualHost *:80>
-    DocumentRoot /var/www/html
-    <Directory /var/www/html>
-        Options Indexes FollowSymLinks MultiViews
-        AllowOverride All
-        Require all granted
-    </Directory>
-</VirtualHost>
-EOT'
-EOF
+                # Di chuyển build output tới thư mục html của Apache
+                sudo cp -r build/* /var/www/html/
+
+                # Tạo tệp cấu hình Apache cho ứng dụng React
+                sudo bash -c 'cat << EOT > /etc/httpd/conf.d/react_app.conf
+  <VirtualHost *:80>
+      DocumentRoot /var/www/html
+      <Directory /var/www/html>
+          Options Indexes FollowSymLinks MultiViews
+          AllowOverride All
+          Require all granted
+      </Directory>
+  </VirtualHost>
+  EOT'
+  EOF
 }
 
 # print the url of the server
