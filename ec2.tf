@@ -70,7 +70,7 @@ resource "aws_instance" "ec2_instance" {
   sudo systemctl enable httpd
   sudo systemctl start httpd
 
-  # Clone the React web app repository from GitHub
+  # Clone the React web repository from GitHub
   sudo yum install -y git
   cd /var/www/html
   sudo git clone https://HaiNamm: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@github.com/HaiNamm/contactary-fe.git
