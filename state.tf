@@ -4,11 +4,11 @@ terraform{
         encrypt = true
         key = "terraform.tfstate"
         region = "ap-southeast-1"
-        profile = "hhainam"
+        profile = "terraform-user"
     }
 }
 
 provider "aws" {
     region = "ap-southeast-1"
-    profile = "hhainam"
+    profile = "terraform-user"
 }
