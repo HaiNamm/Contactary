@@ -59,44 +59,7 @@ resource "aws_instance" "ec2_instance" {
   tags = {
     Name = "web server"
   }
-  user_data = <<-EOF
-  #!/bin/bash
-  sudo yum install -y gcc-c++ make
-  curl -sL https://rpm.nodesource.com/setup_16.x | sudo bash -
-  sudo yum install -y nodejs
-  sudo yum update -y
-  sudo yum install -y httpd
-  sudo amazon-linux-extras install -y epel
-  sudo systemctl enable httpd
-  sudo systemctl start httpd
-
-  # Clone the React web repository from GitHub
-  sudo yum install -y git
-  cd /var/www/html
-  sudo git clone https://HaiNamm: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@github.com/HaiNamm/contactary-fe.git
-  sudo chown -R ec2-user:ec2-user contactary-fe
-  cd contactary-fe && sudo su ec2-user -c "npm install && npm run build"
-
-  # Move build output to Apache's html directory
-  sudo cp -r build/* /var/www/html/
-
-  # Create an Apache configuration file for the React app
-  sudo bash -c 'cat << EOT > /etc/httpd/conf.d/react_app.conf
-  <VirtualHost *:80>
-      DocumentRoot /var/www/html
-      <Directory /var/www/html>
-          Options Indexes FollowSymLinks MultiViews
-          AllowOverride All
-          Require all granted
-      </Directory>
-  </VirtualHost>
-  EOT'
-
-  # Restart Apache to apply changes
-  sudo systemctl restart httpd
-  EOF
 }
-
 # print the url of the server
 output "ec2_public_ipv4_url" {
   value = join("", ["http://", aws_instance.ec2_instance.public_ip])
