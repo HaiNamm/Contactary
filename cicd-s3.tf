@@ -1,3 +1,3 @@
-resource "aws_s3_bucket" "aws-aosnoteterraformstate" {
-  bucket = "aws-aosnoteterraformstate-bucket"
+resource "aws_s3_bucket" "AWS_Contactary" {
+  bucket = "AWS_Contactary"
 } 
