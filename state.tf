@@ -1,6 +1,6 @@
 terraform{
     backend "s3" {
-        bucket = "AWS_Contactary"
+        bucket = "aws-contactary"
         encrypt = true
         key = "terraform.tfstate"
         region = "ap-southeast-1"
