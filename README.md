@@ -4,8 +4,10 @@
 ![service](https://github.com/user-attachments/assets/797f451d-b310-4d7a-bb39-77023efb1723)
 
 ## Mô tả
-Xây dựng **Contact Database** tự động cập nhập và làm mới.
-🗓️ Ngày bắt đầu :   20/06/2023 
+Xây dựng một ứng dụng dùng để tìm kiếm thông tin khách hàng tiềm năng **Contact Database** có cơ sở dữ liệu tự động cập nhập và làm mới.
+
+🗓️ Ngày bắt đầu :   20/06/2023
+
 🗓️ Ngày kết thúc:   06/08/2023
 ## Mục tiêu
 - Xây dựng một **Contact Database** được triển khai hoàn toàn trên AWS để Sales/Demand Generation sử dụng là một nhiệm vụ quan trọng để xây dựng và duy trì một hệ thống liên lạc hiệu quả với khách hàng và tìm kiếm những khách hàng tiềm năng từ những nguồn dữ liệu sẵn có hoặc từ bên thứ ba.
